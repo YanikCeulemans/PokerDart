@@ -1,0 +1,4 @@
+name: pokerdart
+description: A sample web application
+dependencies:
+  browser: any
