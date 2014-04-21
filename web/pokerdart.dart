@@ -1,6 +1,7 @@
 library PokerDart;
 import 'dart:html';
 import 'lib/observable.dart';
+import 'lib/bootstrap_factory.dart';
 part 'player.dart';
 part 'symbol.dart';
 part 'card.dart';
@@ -12,6 +13,8 @@ Deck deck;
 Player player;
 PlayTable playTable;
 
+List<String> names = ['Patrick', 'Spongebob', 'Mr.Krabs'];
+
 void main() {
     HtmlElement startBtn = querySelector('#btn-start');
     InputElement nameInput = querySelector('#name');
@@ -21,9 +24,14 @@ void main() {
 
 void startGame(String playerName) {
     deck = new Deck();
-    player = new Player(playerName);
-    player.addCards(deck.deal(2));
-    List<Player> players = [player];
+    player = new Player(playerName, false);
+    var ais = new List<Player>.generate(3, (index) => new Player(names[index], true));
+    List<Player> players = new List<Player>();
+    players.add(player);
+    players.addAll(ais);
+
+    players.forEach((p) => p.addCards(deck.deal(2)));
+
     playTable = new PlayTable(deck, players);
 
     querySelector('.jumbotron').classes.add('hidden');
@@ -33,10 +41,6 @@ void startGame(String playerName) {
 
 abstract class IHtmlRenderable {
     HtmlElement render();
-}
-
-void handleReady(event) {
-    communityCards.append(deck.deal().single.render());
 }
 
 class PlayTable implements IHtmlRenderable, IObserver {
@@ -111,28 +115,5 @@ class PlayTable implements IHtmlRenderable, IObserver {
     }
 }
 
-class BootstrapButtonType{
-    String _buttonType;
 
-    static BootstrapButtonType defaultType = new BootstrapButtonType._internal('btn-default');
-    static BootstrapButtonType primaryType = new BootstrapButtonType._internal('btn-primary');
-
-    BootstrapButtonType._internal(String buttonType){
-        _buttonType = buttonType;
-    }
-
-    String get buttonType => _buttonType;
-}
-
-class BootstrapFactory{
-    static ButtonElement CreateButton(String text, [BootstrapButtonType bbType]){
-        var buttonElement = new ButtonElement();
-        if (bbType == null){
-            bbType = BootstrapButtonType.defaultType;
-        }
-        buttonElement.classes.add('btn ${bbType.buttonType}');
-        buttonElement.text = text;
-        return buttonElement;
-    }
-}
 

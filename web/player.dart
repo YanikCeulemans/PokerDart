@@ -2,10 +2,11 @@ part of PokerDart;
 
 class Player implements IHtmlRenderable, IObserver {
     String name;
+    bool isAi;
     ObservableList<Card> _cards;
     HtmlElement _playerElement;
 
-    Player(this.name, {ObservableList<Card> cards: null}) {
+    Player(this.name, this.isAi, {ObservableList<Card> cards: null}) {
         if (cards != null) {
             _cards = cards;
         } else {
@@ -30,18 +31,25 @@ class Player implements IHtmlRenderable, IObserver {
     }
 
     void renderHandTo(HtmlElement element){
-        _cards.forEach((c) => element.append(c.render()));
+        if (!isAi){
+            _cards.forEach((c) => element.append(c.render()));
+        }
     }
 
     @override
     HtmlElement render() {
         HtmlElement container = new DivElement();
         container.classes.add('player-container');
+        if (isAi){
+            container.classes.add('player-ai');
+        }
         HtmlElement name = new HeadingElement.h2();
         name.text = this.name;
-
         container.append(name);
-        container.append(_playerElement);
+        if (!isAi){
+            container.append(_playerElement);
+        }
+
         return container;
     }
 

@@ -76,6 +76,17 @@ h2{
     border-style: dashed;
 }
 
+.player-ai{
+    display: inline-block;
+    padding: 10px;
+    border: 1px dashed #ccc;
+    margin: 10px;
+}
+
+.player-ai h2{
+    margin: 0;
+}
+
 .island{
     display:block;
     margin: 10px auto;

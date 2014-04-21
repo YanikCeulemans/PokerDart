@@ -39,4 +39,10 @@ class Card implements IHtmlRenderable{
       card.innerHtml = this.toString();
       return card;
   }
+
+  HtmlElement renderFaceDown(){
+      HtmlElement card = new DivElement();
+      card.classes.add('card card-color-blue');
+      return card;
+  }
 }

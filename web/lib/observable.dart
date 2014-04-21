@@ -1,3 +1,5 @@
+library Observable;
+
 abstract class IObserver {
     void notify();
 }
