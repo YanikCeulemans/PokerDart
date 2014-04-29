@@ -1,7 +1,7 @@
 part of PokerDart;
 
 class Deck{
-    static List<Card> Fulldeck = new List<Card>.generate(52, (i) => new Card((i % 13) + 1, Symbol.AllSymbols[ (i / 13).floor() ] ));
+    static List<Card> Fulldeck = new List<Card>.generate(52, (i) => new Card((i % 13) + 1, Suit.AllSuits[ (i / 13).floor() ] ));
     List<Card> _cards;
 
     Deck({List<Card> cards : null}){

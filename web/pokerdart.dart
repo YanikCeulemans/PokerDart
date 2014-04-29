@@ -1,11 +1,12 @@
 library PokerDart;
 import 'dart:html';
-import 'lib/observable.dart';
-import 'lib/bootstrap_factory.dart';
+import 'package:pokerdart/observable.dart';
+import 'package:pokerdart/bootstrap_factory.dart';
 part 'player.dart';
-part 'symbol.dart';
+part 'suit.dart';
 part 'card.dart';
 part 'deck.dart';
+part 'combinations.dart';
 
 HtmlElement playerElement;
 HtmlElement communityCards;
@@ -25,7 +26,8 @@ void main() {
 void startGame(String playerName) {
     deck = new Deck();
     player = new Player(playerName, false);
-    var ais = new List<Player>.generate(3, (index) => new Player(names[index], true));
+    var ais = new List<Player>.generate(3, (index) => new Player(names[index],
+            true));
     List<Player> players = new List<Player>();
     players.add(player);
     players.addAll(ais);
@@ -37,11 +39,16 @@ void startGame(String playerName) {
     querySelector('.jumbotron').classes.add('hidden');
 
     querySelector('body').append(playTable.render());
+
+    Combinations combinations = new Combinations(deck.deal(7));
+    combinations.check();
 }
 
 abstract class IHtmlRenderable {
     HtmlElement render();
 }
+
+
 
 class PlayTable implements IHtmlRenderable, IObserver {
     ObservableList<Card> _cards;
@@ -63,7 +70,8 @@ class PlayTable implements IHtmlRenderable, IObserver {
         _playTable = new DivElement();
         _playTable.classes.add('play-table');
 
-        _continueButton = BootstrapFactory.CreateButton('Continue!', BootstrapButtonType.primaryType);
+        _continueButton = BootstrapFactory.CreateButton('Continue!',
+                BootstrapButtonType.primaryType);
         _continueButton.onClick.listen(nextStage);
 
         _playTable.append(_continueButton);
@@ -98,7 +106,7 @@ class PlayTable implements IHtmlRenderable, IObserver {
         }
     }
 
-    void _dealNewHand(Player p){
+    void _dealNewHand(Player p) {
         p.clearHand();
         p.addCards(_deck.deal(2));
     }
@@ -114,6 +122,5 @@ class PlayTable implements IHtmlRenderable, IObserver {
         _cards.forEach((c) => _communityCards.append(c.render()));
     }
 }
-
 
 

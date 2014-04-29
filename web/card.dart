@@ -1,10 +1,10 @@
 part of PokerDart;
 
 class Card implements IHtmlRenderable{
-    Symbol symbol;
+    Suit symbol;
     int value;
 
-    Card(value, this.symbol){
+    Card(int value, this.symbol){
         if (value > 0 && value <= 13){
             this.value = value;
         }else{
