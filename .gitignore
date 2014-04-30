@@ -1,2 +1,4 @@
 .settings/
 packages/
+**/*/packages
+.DS_Store
