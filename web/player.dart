@@ -3,14 +3,14 @@ part of PokerDart;
 class Player implements IHtmlRenderable, IObserver {
     String name;
     bool isAi;
-    ObservableList<Card> _cards;
+    ObservableList<HtmlCard> _cards;
     HtmlElement _playerElement;
 
-    Player(this.name, this.isAi, {ObservableList<Card> cards: null}) {
+    Player(this.name, this.isAi, {ObservableList<HtmlCard> cards: null}) {
         if (cards != null) {
             _cards = cards;
         } else {
-            _cards = new ObservableList<Card>();
+            _cards = new ObservableList<HtmlCard>();
         }
         _cards.registerObserver(this);
 
@@ -18,11 +18,11 @@ class Player implements IHtmlRenderable, IObserver {
         _playerElement.classes.add('card-container');
     }
 
-    void addCard(Card c) {
+    void addCard(HtmlCard c) {
         _cards.add(c);
     }
 
-    void addCards(Iterable<Card> cards) {
+    void addCards(Iterable<HtmlCard> cards) {
         _cards.addAll(cards);
     }
 

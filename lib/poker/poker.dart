@@ -5,12 +5,12 @@ class Suit {
     static Suit Diamonds = new Suit(2);
     static Suit Clubs = new Suit(3);
     static Suit Spades = new Suit(4);
-    static List<Suit> AllSuits = new List.generate(4, (i) => new Suit(i+1));
+    static List<Suit> AllSuits = new List.generate(4, (i) => new Suit(i + 1));
 
     int suitType;
 
-    Suit(suitType){
-        if (suitType < 1 || suitType > 4){
+    Suit(suitType) {
+        if (suitType < 1 || suitType > 4) {
             throw new ArgumentError('The suitType argument has to be in range: 1 <= suitType <= 4, but was: $suitType');
         }
         this.suitType = suitType;
@@ -25,8 +25,7 @@ class Suit {
             case 4:
                 return 'Black';
             default:
-                throw new Exception(
-                        'Suit type out of range, expected between 1-4 but was $suitType');
+                throw new Exception('Suit type out of range, expected between 1-4 but was $suitType');
         }
     }
 
@@ -41,26 +40,25 @@ class Suit {
             case 4:
                 return 'Spades';
             default:
-                throw new Exception(
-                        'Suit type out of range, expected between 1-4 but was $suitType');
+                throw new Exception('Suit type out of range, expected between 1-4 but was $suitType');
         }
     }
 }
 
 
-class Card{
-    Suit symbol;
+class Card {
+    Suit suit;
     int value;
 
-    Card(int value, this.symbol){
-        if (value > 0 && value <= 13){
+    Card(int value, this.suit) {
+        if (value > 0 && value <= 13) {
             this.value = value;
-        }else{
+        } else {
             throw new Exception('A card must be in range: 0 < card <= 13, but was: $value');
         }
     }
 
-    String get color => symbol.color;
+    String get color => suit.color;
 
     String get valueString {
         switch (value) {
@@ -77,7 +75,7 @@ class Card{
         }
     }
 
-    String toString() => '$valueString of $symbol';
+    String toString() => '$valueString of $suit';
 }
 
 class Combinations {
@@ -95,8 +93,7 @@ class Combinations {
     bool _isStraightFlush() {
         Map<Suit, List<Card>> map = new Map<Suit, List<Card>>();
 
-        _cards.forEach((c) => map.containsKey(c.symbol) ? map[c.symbol].add(c) :
-                map[c.symbol] = [c]);
+        _cards.forEach((c) => map.containsKey(c.suit) ? map[c.suit].add(c) : map[c.suit] = [c]);
         List<Suit> keys = map.keys.toList();
         for (int i = 0; i < keys.length; i++) {
             List<Card> currList = map[keys[i]];
@@ -120,16 +117,15 @@ class Combinations {
     // check if the given cards contain a series: e.g. 1-2-3-4-5, but also
     // 1-4-5-6-7-8, or 4-5-6-7-8-11-13
     static bool isStraight(List<Card> cards) {
-        // Check if the cards contain a straight, this should work for a list
-        // of cards with a length greater than 5, eg 7
+        if (cards.length < 5) return false;
+
         cards.sort((c1, c2) => c1.value - c2.value);
         int startValue = cards[0].value;
-        for (var j = 1; j < cards.length; j++) {
+
+        for (var j = 1; j < 5; j++) {
             int nextValue = cards[j].value;
-            // TODO: improve the check here to account for subsets of 5 from a
-            // larger set
             if (nextValue - startValue != 1) {
-                return false;
+                return isStraight(cards.skip(j).toList());
             }
             startValue = nextValue;
         }

@@ -1,7 +1,7 @@
 part of PokerDart;
 
 class Combinations {
-    List<Card> _cards;
+    List<HtmlCard> _cards;
 
     Combinations(this._cards);
 
@@ -13,13 +13,13 @@ class Combinations {
     }
 
     bool _isStraightFlush() {
-        Map<Suit, List<Card>> map = new Map<Suit, List<Card>>();
+        Map<Suit, List<HtmlCard>> map = new Map<Suit, List<HtmlCard>>();
 
-        _cards.forEach((c) => map.containsKey(c.symbol) ? map[c.symbol].add(c) :
-                map[c.symbol] = [c]);
+        _cards.forEach((c) => map.containsKey(c.suit) ? map[c.suit].add(c) :
+                map[c.suit] = [c]);
         List<Suit> keys = map.keys.toList();
         for (int i = 0; i < keys.length; i++) {
-            List<Card> currList = map[keys[i]];
+            List<HtmlCard> currList = map[keys[i]];
             if (currList.length >= 5) {
                 // check if they are a series: e.g. 1-2-3-4-5
                 currList.sort((c1, c2) => c1.value - c2.value);
@@ -39,7 +39,7 @@ class Combinations {
 
     // check if the given cards contain a series: e.g. 1-2-3-4-5, but also
     // 1-4-5-6-7-8, or 4-5-6-7-8-11-13
-    static bool isStraight(List<Card> cards) {
+    static bool isStraight(List<HtmlCard> cards) {
         // Check if the cards contain a straight, this should work for a list
         // of cards with a length greater than 5, eg 7
         cards.sort((c1, c2) => c1.value - c2.value);

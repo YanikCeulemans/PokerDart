@@ -1,14 +1,14 @@
 part of PokerDart;
 
 class Deck{
-    static List<Card> Fulldeck = new List<Card>.generate(52, (i) => new Card((i % 13) + 1, Suit.AllSuits[ (i / 13).floor() ] ));
-    List<Card> _cards;
+    static List<HtmlCard> Fulldeck = new List<HtmlCard>.generate(52, (i) => new HtmlCard((i % 13) + 1, Suit.AllSuits[ (i / 13).floor() ] ));
+    List<HtmlCard> _cards;
 
-    Deck({List<Card> cards : null}){
+    Deck({List<HtmlCard> cards : null}){
         if (cards != null){
             _cards = cards;
         }else{
-            _cards = new List<Card>.from(Deck.Fulldeck);
+            _cards = new List<HtmlCard>.from(Deck.Fulldeck);
             _cards.shuffle();
         }
     }
@@ -19,18 +19,18 @@ class Deck{
         return result;
     }
 
-    void addCard(Card c){
+    void addCard(HtmlCard c){
         _cards.add(c);
     }
 
-    List<Card> deal([int amount = 1]){
+    List<HtmlCard> deal([int amount = 1]){
         if (amount < 1){
             throw new ArgumentError('The amount argument cannot be less than 1, but was: $amount');
         }
-        List<Card> result = new List<Card>();
+        List<HtmlCard> result = new List<HtmlCard>();
         if (amount >= _cards.length){
-            result = new List<Card>.from(_cards);
-            _cards = new List<Card>();
+            result = new List<HtmlCard>.from(_cards);
+            _cards = new List<HtmlCard>();
         }else{
             result.addAll(_cards.getRange(0, amount));
             _cards.removeRange(0, amount);
