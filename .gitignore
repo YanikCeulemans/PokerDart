@@ -2,3 +2,4 @@
 packages/
 **/*/packages
 .DS_Store
+.idea/

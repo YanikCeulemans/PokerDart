@@ -5,7 +5,6 @@ import 'package:pokerdart/bootstrap_factory.dart';
 import 'package:pokerdart/poker/poker.dart';
 part 'player.dart';
 part 'deck.dart';
-part 'combinations.dart';
 
 HtmlElement playerElement;
 HtmlElement communityCards;
