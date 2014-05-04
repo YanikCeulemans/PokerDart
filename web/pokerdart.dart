@@ -36,33 +36,28 @@ void startGame(String playerName) {
     querySelector('.jumbotron').classes.add('hidden');
 
     querySelector('body').append(playTable.render());
-
-    Combinations combinations = new Combinations(deck.deal(7));
-    combinations.check();
 }
 
 abstract class IHtmlRenderable {
     HtmlElement render();
 }
 
-
-
 class PlayTable implements IHtmlRenderable, IObserver {
-    ObservableList<HtmlCard> _cards;
+    ObservableList<HtmlCard> _communityCards;
     int _gameStage;
     Deck _deck;
     List<Player> _players;
     HtmlElement _playTable;
-    HtmlElement _communityCards;
+    HtmlElement _communityCardsContainer;
     ButtonElement _continueButton;
 
     PlayTable(this._deck, this._players) {
         this._gameStage = 1;
-        _communityCards = new DivElement();
-        _communityCards.classes.add('card-container');
+        _communityCardsContainer = new DivElement();
+        _communityCardsContainer.classes.add('card-container');
 
-        _cards = new ObservableList<HtmlCard>();
-        _cards.registerObserver(this);
+        _communityCards = new ObservableList<HtmlCard>();
+        _communityCards.registerObserver(this);
 
         _playTable = new DivElement();
         _playTable.classes.add('play-table');
@@ -74,33 +69,47 @@ class PlayTable implements IHtmlRenderable, IObserver {
 
         _players.forEach((p) => _playTable.append(p.render()));
 
-        _playTable.append(_communityCards);
+        _playTable.append(_communityCardsContainer);
     }
 
     void nextStage(e) {
         switch (_gameStage) {
             case 0:
-                _cards.clear();
+                _communityCards.clear();
                 _continueButton.text = 'Continue!';
                 _deck = new Deck();
                 _players.forEach(_dealNewHand);
                 _gameStage++;
                 break;
             case 1:
-                _cards.addAll(_deck.deal(3));
+                _communityCards.addAll(_deck.deal(3));
                 _gameStage++;
                 break;
             case 2:
-                _cards.addAll(_deck.deal());
+                _communityCards.addAll(_deck.deal());
                 _gameStage++;
                 break;
             case 3:
-                _cards.addAll(_deck.deal());
+                _communityCards.addAll(_deck.deal());
                 _continueButton.text = 'Next game';
                 _gameStage = 0;
+
+
+                List<Hand> playerHands = new List<Hand>();
+                _players.forEach((p){
+                    List<HtmlCard> currentCards = p.hand;
+                    currentCards.addAll(_communityCards.toList());
+                    var playerHand = new Combinations(currentCards).check();
+                    playerHands.add(playerHand);
+                });
+
+                playerHands.forEach((hand) => _playTable.appendText(hand.toString()));
+
                 break;
         }
     }
+
+
 
     void _dealNewHand(Player p) {
         p.clearHand();
@@ -114,8 +123,8 @@ class PlayTable implements IHtmlRenderable, IObserver {
 
     @override
     void notify() {
-        _communityCards.innerHtml = '';
-        _cards.forEach((c) => _communityCards.append(c.render()));
+        _communityCardsContainer.innerHtml = '';
+        _communityCards.forEach((c) => _communityCardsContainer.append(c.render()));
     }
 }
 
@@ -136,5 +145,7 @@ class HtmlCard extends Card implements IHtmlRenderable {
         card.classes.add('card card-color-blue');
         return card;
     }
+
+    String toString() => super.toString();
 }
 

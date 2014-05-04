@@ -30,6 +30,8 @@ class Player implements IHtmlRenderable, IObserver {
         _cards.clear();
     }
 
+    List<HtmlCard> get hand => _cards.toList();
+
     void renderHandTo(HtmlElement element){
         if (!isAi){
             _cards.forEach((c) => element.append(c.render()));

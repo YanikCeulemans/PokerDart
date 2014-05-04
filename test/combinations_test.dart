@@ -6,6 +6,7 @@ import 'package:pokerdart/poker/poker.dart';
 void main(){
     List<Card> cards;
     Combinations combinations;
+
     group('Combinations isStraight()', (){
         setUp((){
             cards = [new Card(1, Suit.Clubs),
@@ -93,6 +94,7 @@ void main(){
         test('correct 5 cards in 7 card list (lower bound of range and higher bound out of range) is a straight', () =>
             expect(combinations.isStraight(), isTrue));
     });
+
     group('Combinations isStraightFlush()', (){
         setUp((){
             cards = [new Card(4, Suit.Clubs),
@@ -121,6 +123,7 @@ void main(){
             expect(combinations.isStraightFlush(), isFalse);
         });
     });
+
     group('Combinations getFourOfAKind()', (){
         setUp((){
             cards = [new Card(4, Suit.Hearts),
@@ -155,6 +158,7 @@ void main(){
             expect(combinations.getXOfAKind(cards, 4), isNull);
         });
     });
+
     group('Combinations getThreeOfAKind()', (){
         setUp((){
             cards = [new Card(4, Suit.Hearts),
@@ -231,5 +235,106 @@ void main(){
                                                         new Card(10, Suit.Clubs)]));
         });
     });
+
+    group('Combinations getFullHouse()', (){
+        setUp((){
+            cards = [new Card(4, Suit.Hearts),
+                    new Card(4, Suit.Clubs),
+                    new Card(4, Suit.Diamonds),
+                    new Card(4, Suit.Spades)];
+            combinations = new Combinations(cards);
+        });
+        test('4 cards can never be a full house', (){
+            expect(combinations.getFullHouse(cards), isNull);
+        });
+        setUp((){
+            cards = [new Card(4, Suit.Hearts),
+                    new Card(3, Suit.Clubs),
+                    new Card(1, Suit.Spades),
+                    new Card(5, Suit.Clubs),
+                    new Card(7, Suit.Diamonds),
+                    new Card(11, Suit.Hearts),
+                    new Card(6, Suit.Clubs)];
+            combinations = new Combinations(cards);
+        });
+        test('Incorrect cards are not a full house', (){
+            expect(combinations.getFullHouse(cards), isNull);
+        });
+        setUp((){
+            cards = [new Card(1, Suit.Hearts),
+                    new Card(3, Suit.Clubs),
+                    new Card(3, Suit.Spades),
+                    new Card(6, Suit.Spades),
+                    new Card(6, Suit.Hearts),
+                    new Card(6, Suit.Diamonds),
+                    new Card(10, Suit.Hearts)];
+            combinations = new Combinations(cards);
+        });
+        test('Happy path is full house', (){
+            expect(combinations.getFullHouse(cards), unorderedEquals([new Card(3, Suit.Clubs),
+                                                                    new Card(3, Suit.Spades),
+                                                                    new Card(6, Suit.Spades),
+                                                                    new Card(6, Suit.Hearts),
+                                                                    new Card(6, Suit.Diamonds)]));
+        });
+    });
+
+    group('Combinations getTwoPair()', (){
+        setUp((){
+            cards = [new Card(4, Suit.Hearts),
+            new Card(4, Suit.Clubs),
+            new Card(4, Suit.Spades)];
+            combinations = new Combinations(cards);
+        });
+        test('3 cards can never be two pair', (){
+            expect(combinations.getTwoPair(cards), isNull);
+        });
+        setUp((){
+            cards = [new Card(4, Suit.Hearts),
+                    new Card(3, Suit.Clubs),
+                    new Card(1, Suit.Spades),
+                    new Card(5, Suit.Clubs),
+                    new Card(7, Suit.Diamonds),
+                    new Card(11, Suit.Hearts),
+                    new Card(6, Suit.Clubs)];
+            combinations = new Combinations(cards);
+        });
+        test('Incorrect cards are not two pair', (){
+            expect(combinations.getTwoPair(cards), isNull);
+        });
+        setUp((){
+            cards = [new Card(1, Suit.Hearts),
+                    new Card(3, Suit.Clubs),
+                    new Card(3, Suit.Spades),
+                    new Card(6, Suit.Spades),
+                    new Card(6, Suit.Hearts),
+                    new Card(4, Suit.Diamonds),
+                    new Card(10, Suit.Hearts)];
+            combinations = new Combinations(cards);
+        });
+        test('Happy path is two pair', (){
+            expect(combinations.getTwoPair(cards), unorderedEquals([new Card(3, Suit.Clubs),
+                                                                    new Card(3, Suit.Spades),
+                                                                    new Card(6, Suit.Spades),
+                                                                    new Card(6, Suit.Hearts)]));
+        });
+    });
+
+    group('Combinations getHighCard()', (){
+        setUp((){
+            cards = [new Card(4, Suit.Hearts),
+            new Card(3, Suit.Clubs),
+            new Card(1, Suit.Spades),
+            new Card(5, Suit.Clubs),
+            new Card(7, Suit.Diamonds),
+            new Card(11, Suit.Hearts),
+            new Card(6, Suit.Clubs)];
+            combinations = new Combinations(cards);
+        });
+        test('Incorrect cards are not two pair', (){
+            expect(combinations.getHighCard(cards), equals(new Card(11, Suit.Hearts)));
+        });
+    });
+
 
 }

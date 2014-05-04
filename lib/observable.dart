@@ -52,6 +52,8 @@ class ObservableList<T> extends Observable {
         return result;
     }
 
+    List<T> toList() => new List<T>.from(_myList);
+
     /**
      * Empty the List
      */

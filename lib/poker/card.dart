@@ -1,6 +1,6 @@
 part of Poker;
 
-class Card {
+class Card implements Comparable<Card>{
     Suit suit;
     int value;
 
@@ -39,8 +39,14 @@ class Card {
     @override
     int get hashCode{
         int hash = 1;
-        hash = hash * 17 + this.suit.suitType;
+        hash = hash * 17 + this.suit._suitType;
         hash = hash * 31 + this.value;
         return hash;
     }
+
+    int compareTo(Card other) {
+        return this.value - other.value;
+    }
+
+
 }
