@@ -12,17 +12,16 @@ class Combinations {
     Combinations(this._cards);
 
     Hand check() {
-        int value = 1;
         List<Hand> possibleHands = new List<Hand>();
-        possibleHands.add(new Hand('Straight flush', getStraightFlush(_cards), value++));
-        possibleHands.add(new Hand('Four of a kind', getXOfAKind(_cards, 4), value++));
-        possibleHands.add(new Hand('Full house', getFullHouse(_cards), value++));
-        possibleHands.add(new Hand('Flush', getFlush(_cards), value++));
-        possibleHands.add(new Hand('Straight', getStraight(_cards), value++));
-        possibleHands.add(new Hand('Three of a kind', getXOfAKind(_cards, 3), value++));
-        possibleHands.add(new Hand('Two pair', getTwoPair(_cards), value++));
-        possibleHands.add(new Hand('One pair', getXOfAKind(_cards, 2), value++));
-        possibleHands.add(new Hand('High card', getHighCard(_cards), value++));
+        possibleHands.add(new Hand('Straight flush', getStraightFlush(_cards)));
+        possibleHands.add(new Hand('Four of a kind', getXOfAKind(_cards, 4)));
+        possibleHands.add(new Hand('Full house', getFullHouse(_cards)));
+        possibleHands.add(new Hand('Flush', getFlush(_cards)));
+        possibleHands.add(new Hand('Straight', getStraight(_cards)));
+        possibleHands.add(new Hand('Three of a kind', getXOfAKind(_cards, 3)));
+        possibleHands.add(new Hand('Two pair', getTwoPair(_cards)));
+        possibleHands.add(new Hand('One pair', getXOfAKind(_cards, 2)));
+        possibleHands.add(new Hand('High card', [getHighCard(_cards)]));
 
         for (var i = 0; i < possibleHands.length; ++i) {
             var possibleHand = possibleHands[i];
@@ -31,6 +30,7 @@ class Combinations {
         return null;
     }
 
+    // Used in testing: to be removed
     bool isStraightFlush() {
         var straightList = getStraight(_cards);
         if (straightList != null){
@@ -39,6 +39,7 @@ class Combinations {
         return false;
     }
 
+    // Used in testing: to be removed
     bool isStraight() {
         var straightList = getStraight(_cards);
         return straightList != null && straightList.length == _amountOfCardsForStraight;
